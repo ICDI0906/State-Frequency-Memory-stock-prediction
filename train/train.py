@@ -27,7 +27,7 @@ if __name__=='__main__':
 	
     global_start_time = time.time()
 
-    print '> Loading data... '
+    print ('Loading data... ')
     
     data_file = args.data_file
     X_train, y_train, X_val, y_val, X_test, y_test, gt_test, max_data, min_data = build.load_data(data_file, step)
@@ -35,7 +35,7 @@ if __name__=='__main__':
     val_len = X_val.shape[1]-X_train.shape[1]
     test_len = X_test.shape[1]-X_val.shape[1]
 
-    print '> Data Loaded. Compiling...'
+    print ('> Data Loaded. Compiling...')
     model = build.build_model([1, args.hidden_dim, 1], args.freq_dim, args.learning_rate)
     best_error = np.inf
     best_epoch = 0
@@ -54,17 +54,17 @@ if __name__=='__main__':
         predicted = model.predict(X_train)
         train_error = np.sum((predicted[:,:,0] - y_train[:,:,0])**2) / (predicted.shape[0] * predicted.shape[1])
         
-        print num_iter, ' training error ', train_error
+        print (num_iter, ' training error ', train_error)
 
         predicted = model.predict(X_val)
         val_error = np.sum((predicted[:,-val_len:,0] - y_val[:,-val_len:,0])**2) / (val_len * predicted.shape[0])
         
-        print ' val error ', val_error
+        print (' val error ', val_error)
         
         if(val_error < best_error):
             best_error = val_error
             best_iter = args.nsnapshot * (ii+1)
     
-    print 'Training duration (s) : ', time.time() - global_start_time
-    print 'best iteration ', best_iter
-    print 'smallest error ', best_error
+    print ('Training duration (s) : ', time.time() - global_start_time)
+    print ('best iteration ', best_iter)
+    print ('smallest error ', best_error)
